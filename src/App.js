@@ -16,7 +16,7 @@ function App() {
  }, []);
 
   async function handleAddRepository() {
-    // TODO
+    
     const response = await api.post("repositories", {
       title: "Backend com PHP",
       url: "https://github.com/Rocketseat/bootcamp-gostack-desafios/tree/master/desafio-conceitos-reactjs",
@@ -24,20 +24,18 @@ function App() {
       likes: 0,
     });
 
-    const repositorie = response.data;
+    const repository = response.data;
 
-    setRepositories([...repositories, repositorie]);
+    setRepositories([...repositories, repository]);
 
   }
 
   async function handleRemoveRepository(id) {
     
-    const response = await api.delete("repositories");
+    await api.delete(`repositories/${id}`);
 
-    console.log(response);
-
-    // const repositorie = response.splice(id);
-    // setRepositories([...repositories, repositorie])
+  
+    setRepositories(repositories.filter(repository => repository.id !== id));
   }
 
   return (
@@ -45,9 +43,9 @@ function App() {
 
       <ul data-testid="repository-list">
 
-        {repositories.map((repositorie) => 
-        <li key={repositorie.id}>{repositorie.title}
-          <button onClick={() => handleRemoveRepository(1)}>
+        {repositories.map((repository) => 
+        <li key={repository.id}>{repository.title}
+          <button onClick={() => handleRemoveRepository(repository.id)}>
             Remover
           </button>
         </li>
